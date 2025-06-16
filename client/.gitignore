@@ -1,0 +1,61 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+node_modules
+dist
+dist-ssr
+*.local
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Dependency directories
+node_modules/
+vendor/
+.pnpm/
+.python-version
+
+# Environment files (sensitive data!)
+.env
+.env.local
+*.key
+*.pem
+
+# Build files
+dist/
+build/
+*.exe
+*.dll
+*.so
+*.out
+
+# Logs
+*.log
+logs/
+
+# OS/Editor files
+.DS_Store
+.idea/
+.vscode/
+*.swp
+*.swo
+Thumbs.db
+
+# Testing/coverage
+coverage/
+.nyc_output/
+*.lcov

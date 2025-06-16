@@ -1,0 +1,13 @@
+# Frontend specific
+node_modules/
+dist/
+build/
+.next/
+out/
+
+# General
+.env
+.env.local
+.DS_Store
+.vscode/
+*.log

@@ -1,0 +1,67 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap');
+
+@import "tailwindcss" ;
+
+:root{    /*tokrns*/
+  /* Course Details */
+  --size-course-details-hrading-small: 26px;
+  --leading-course-details-heading-small: 36px;
+  
+  --size-course-details-hrading-large: 36px;
+  --leading-course-details-heading-large: 44px;
+
+  /* Home heading-Headings */
+  --size-home-heading-small: 28px;
+  --leading-home-heading-small: 34px;
+  
+  --size-home-heading-large: 48px;
+  --leading-home-heading-large: 56px;
+
+  /* Default Text */
+  --size-default: 15px;
+  --leading-default: 21px;
+}
+
+.text-course-details-heading-small {
+  font-size: var(--size-course-details-hrading-small);
+  line-height: var(--leading-course-details-heading-small);
+  font-weight: 600;
+}
+
+.text-course-details-heading-large {
+  font-size: var(--size-course-details-hrading-large);
+  line-height: var(--leading-course-details-heading-large);
+  font-weight: 700;
+}
+
+.text-home-heading-small {
+  font-size: var(--size-home-heading-small);
+  line-height: var(--leading-home-heading-small);
+  font-weight: 600;
+}
+
+.text-home-heading-large {
+  font-size: var(--size-home-heading-large);
+  line-height: var(--leading-home-heading-large);
+  font-weight: 700;
+}
+
+
+.text-default {
+  font-size: var(--size-default);
+  line-height: var(--leading-default);
+  font-weight: 400;
+}
+
+.grid-template-columns {
+ grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+}
+
+.h-section-height{
+  height: 500px;
+
+}
+
+* {
+  font-family: 'Outfit';
+}
