@@ -18,7 +18,7 @@ const Footer = () => {
             <li><a href="#"></a>Private policy</li>
           </ul>
         </div>
-        <div className='hideen md:flex flex-col items-start w-full'>
+        <div className='hidden md:flex flex-col items-start w-full'>
           <h2 className='font-semibold text-white mb-5'>Subscribe to our news letter</h2>
           <p className='text-sm text-white/80'>The latest news, articles and resources, sent to your inbox weekly.</p>
           <div className='flex items-center gap-2 pt-4'>
@@ -27,7 +27,7 @@ const Footer = () => {
           </div>
         </div>
       </div>
-      <p className='py-4 text-center text-xs md:text-sm text-white/60'>Copyright 2025 © Agnik Mukherjee. | All Rights Reserved.</p>
+      <p className='py-4 text-center text-xs md:text-sm text-white /60'>Copyright 2025 © Agnik Mukherjee. | All Rights Reserved.</p>
     </footer>
   )
 }
