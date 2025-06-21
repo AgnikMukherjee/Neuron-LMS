@@ -2,6 +2,17 @@
 
 @import "tailwindcss" ;
 
+
+html, body, #root{
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+}
+
+
 :root{    /*tokrns*/
   /* Course Details */
   --size-course-details-hrading-small: 26px;
