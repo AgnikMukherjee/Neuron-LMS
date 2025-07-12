@@ -1,24 +1,46 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { AppContext } from '../../context/AppContext'
 import {Line} from 'rc-progress'
 import Footer from '../../components/student/Footer'
+import axios from 'axios'
+import { data } from 'react-router-dom'
+import { toast } from 'react-toastify'
 
 const MyEnrollments = () => {
-    const {enrolledCourses , calculateCourseDuration, navigate} = useContext(AppContext)
+    const {enrolledCourses , calculateCourseDuration, navigate , userdata , fetchUserEnrolledCourses , backendUrl , getToken , calculateNoOfLectures} = useContext(AppContext)
 
-    const [progressArray, setProgressArray] = useState([
-      { lecturesCompleted: 2,totalLectures: 4 },
-      { lecturesCompleted: 2,totalLectures: 4 },
-      { lecturesCompleted: 4,totalLectures: 4 },
-      { lecturesCompleted: 0,totalLectures: 4 },
-      { lecturesCompleted: 2,totalLectures: 4 },
-      { lecturesCompleted: 2,totalLectures: 4 },
-      { lecturesCompleted: 4,totalLectures: 4 },
-      { lecturesCompleted: 2,totalLectures: 4 },
-      { lecturesCompleted: 2,totalLectures: 4 },
-      { lecturesCompleted: 2,totalLectures: 4 },
-    ]);
+    const [progressArray, setProgressArray] = useState([]);
 
+    const getCourseProgress = async () => {
+      try {
+        const token = await getToken()
+        const tempProgressArray = await Promise.all(enrolledCourses.map(async (course) => {
+          const {data} = await axios.post(`${backendUrl}/api/user/get-course-progress` , {courseId: course._id} , {
+            headers: {
+              Authorization: `Bearer ${token}`
+            }
+          })
+          let totalLectures = calculateNoOfLectures(course)
+        
+        const lecturesCompleted  = data.progressData ? data.progressData.lecturesCompleted.length : 0;
+        return {totalLectures ,lecturesCompleted}
+        }))
+        setProgressArray(tempProgressArray)
+      } catch (error) {
+        toast.error(error.message)
+      }
+    }
+
+    useEffect(() => {
+      if(userdata){
+        fetchUserEnrolledCourses()
+      }
+    }, [userdata])
+    useEffect(() => {
+      if(enrolledCourses.length > 0){
+        getCourseProgress()
+      }
+    }, [enrolledCourses])
   return (
     <>
       <div className='md:px-36 px-8 pt-10'>
@@ -26,10 +48,10 @@ const MyEnrollments = () => {
         <table className='md:table-auto table-fixed w-full overflow-hidden border mt-10'>
           <thead className='text-gray-900 border border-gray-500/30 text-sm text-left max-sm:hidden'>
             <tr>
-              <th className='px=4 py-3 font-semibold truncate'>Course</th>
-              <th className='px=4 py-3 font-semibold truncate'>Duration</th>
-              <th className='px=4 py-3 font-semibold truncate'>Completed</th>
-              <th className='px=4 py-3 font-semibold truncate'>Status</th>
+              <th className='px-4 py-3 font-semibold truncate'>Course</th>
+              <th className='px-4 py-3 font-semibold truncate'>Duration</th>
+              <th className='px-4 py-3 font-semibold truncate'>Completed</th>
+              <th className='px-4 py-3 font-semibold truncate'>Status</th>
             </tr>
           </thead>
           <tbody className='text-gray-700'>
@@ -42,10 +64,10 @@ const MyEnrollments = () => {
                     <Line strokeWidth={2} percent={progressArray[index] ?(progressArray[index].lecturesCompleted * 100)/progressArray[index].totalLectures : 0} className='bg-gray-300 rounded-full '/>
                   </div>
                 </td >
-                <td className='px-4 py-3 max-sm:hideen'>
+                <td className='px-4 py-3 max-sm:hidden'>
                   {calculateCourseDuration(course)} 
                 </td>
-                <td className='px-4 py-3 max-sm:hideen'>
+                <td className='px-4 py-3 max-sm:hidden'>
                   {progressArray[index] && `${progressArray[index].lecturesCompleted} / ${progressArray[index].totalLectures} `}<span>lectures</span>
                 </td>
                 <td className='px-4 py-3 max-sm:text-right'>

@@ -12,7 +12,7 @@ userRouter.post('/purchase', purchaseCourse)
 
 userRouter.post('/update-course-progress' , updateUserCourseProgress)
 
-userRouter.post('/update-course-progress' , getUserCourseProgress)
+userRouter.post('/get-course-progress' , getUserCourseProgress)
 
 userRouter.post('/add-rating' , addUserRating)
 
