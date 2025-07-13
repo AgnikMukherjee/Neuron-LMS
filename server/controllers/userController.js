@@ -128,7 +128,19 @@ export const getUserCourseProgress = async (req, res) => {
     try {
         const { userId } = req.auth()
         const { courseId } = req.body
-        const progressData = await CourseProgress.findOne({ userId, courseId })
+        let progressData = await CourseProgress.findOne({ userId, courseId })
+
+        if (!progressData) {
+            // If no progress, return an empty structure
+            progressData = {
+                userId,
+                courseId,
+                lectureCompleted: []
+            }
+        }
+
+        // Ensure lectureCompleted is always an array
+        progressData.lectureCompleted = progressData.lectureCompleted || [];
 
         res.json({ success: true, progressData });
     } catch (error) {
