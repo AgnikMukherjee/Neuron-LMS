@@ -2,7 +2,7 @@ import { clerkClient } from '@clerk/express'
 import Course from '../models/Course.js'
 import { v2 as cloudinary } from 'cloudinary'
 import { Purchase } from '../models/Purchase.js'
-
+import User from '../models/User.js'
 
 
 //updating role to educator
@@ -74,12 +74,10 @@ export const educatorDashboardData = async (req, res) => {
 
         //calculate total earnings
         const purchases = await Purchase.find({
-            courseId: {
-                $in: courseIds,
-                status: "completed"
-            }
+            courseId: { $in: courseIds },
+            status: "completed"
         })
-        const totalEarnings = Purchase.reduce((sum, purchase) =>
+        const totalEarnings = purchases.reduce((sum, purchase) =>
             sum += purchase.amount, 0)
 
         //collect uniquw student ids enrolled in courses
@@ -97,7 +95,7 @@ export const educatorDashboardData = async (req, res) => {
                 })
             })
         }
-        res.json({ success: true, dashboradData: { totalEarnings, totalCourses, enrolledStudentsData } })
+        res.json({ success: true, dashboardData: { totalEarnings, totalCourses, enrolledStudentsData } })
     } catch (error) {
         res.json({ success: false, messege: error.message })
     }
@@ -112,10 +110,8 @@ export const getEnrolledStudentsData = async (req, res) => {
         const courseIds = courses.map(course => course._id)
 
         const purchases = await Purchase.find({
-            courseId: {
-                $in: courseIds,
-                status: "completed"
-            }
+            courseId: { $in: courseIds },
+            status: "completed"
         }).populate('userId', 'name imageUrl').populate('courseId', 'courseTitle')
 
         const enrolledStudents = purchases.map(purchase => ({

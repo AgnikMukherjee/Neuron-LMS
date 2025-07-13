@@ -13,7 +13,7 @@ educatorRouter.post('/add-course', upload.single('image'), protectEducator, addC
 
 educatorRouter.get('/courses', protectEducator, getEducatorCourses)
 
-educatorRouter.get('/dhashboard', protectEducator, educatorDashboardData)
+educatorRouter.get('/dashboard', protectEducator, educatorDashboardData)
 
 educatorRouter.get('/enrolled-students', protectEducator, getEnrolledStudentsData)
 

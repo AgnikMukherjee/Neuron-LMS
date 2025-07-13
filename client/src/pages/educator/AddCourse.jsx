@@ -146,6 +146,7 @@ const AddCourse = () => {
         quillRef.current.root.innerHTML = ""
 
         console.log("Course published!")
+        toast.success('Course published!')
       } else {
         toast.error(data.message)
       }
