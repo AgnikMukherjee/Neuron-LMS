@@ -1,20 +1,42 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { AppContext } from '../../context/AppContext'
 import Loading from '../../components/student/Loading'
+import axios from 'axios'
+import { toast } from 'react-toastify'
 
 const MyCourses = () => {
 
-  const { currency, allCourses } = useContext(AppContext)
+  const { currency, backendUrl, isEducator , getToken } = useContext(AppContext)
 
   const [courses, setCourses] = useState(null)
 
   const fetchEducatorCourses = async () => {
-    setCourses(allCourses)
+    try {
+      const token = await getToken()
+      const { data } = await axios.get(backendUrl + '/api/educator/courses' , {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
+
+      if(data.success){
+        setCourses(data.courses)
+        // console.log("✅ Courses set:", data.courses);
+      } else {
+      toast.error("Backend responded with failure: " + data.message);
+    }
+    } catch (error) {
+      //  console.error("❌ Error fetching courses:", error);
+      toast.error(error.message)
+    }
   }
 
   useEffect(() => {
-    fetchEducatorCourses()
-  }, [allCourses])
+    console.log("🧪 isEducator:", isEducator);
+    if(isEducator){
+      fetchEducatorCourses()
+    }
+  }, [isEducator])
   return courses ? (
     <div className='h-screen flex flex-col items-start justify-between  md:p-8 md:pb-0 p-4 pt-8 pb-0 '>
       <div className='w-full'>
@@ -41,11 +63,11 @@ const MyCourses = () => {
                   <td className='px-4 py-3 '>
                     {currency} {Math.floor(course.enrolledStudents.length * (course.coursePrice - course.discount * course.coursePrice / 100))}
                   </td>
-                  <td className='`px-4 py-3'>
+                  <td className='px-4 py-3'>
                     {course.enrolledStudents.length}
                   </td>
                   <td className='px-4 py-3'>
-                    {new Date(courses.createdAt).toLocaleDateString()}
+                    {new Date(course.createdAt).toLocaleDateString()}
                   </td>
                 </tr>
               ))}
