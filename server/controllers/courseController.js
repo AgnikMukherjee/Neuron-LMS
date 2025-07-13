@@ -9,7 +9,7 @@ export const getAllCourses = async (req, res) => {
 
         res.json({ success: true, courses });
     } catch (error) {
-        res.json({ success: false, messege: error.message });
+        res.json({ success: false, message: error.message });
     }
 }; 
 
@@ -30,7 +30,7 @@ export const getCourseId = async (req, res) => {
 
         res.json({ success: true, courseData });
     } catch (error) {
-        res.json({ success: false, messege: error.message });
+        res.json({ success: false, message: error.message });
     }
 };
 

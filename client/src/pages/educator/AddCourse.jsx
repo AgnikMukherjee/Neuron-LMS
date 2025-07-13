@@ -1,8 +1,14 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 import uniquid from 'uniqid'
 import Quill from 'quill'
 import { assets } from '../../assets/assets'
+import { AppContext } from '../../context/AppContext'
+import { toast } from 'react-toastify'
+import axios from 'axios'
+
 const AddCourse = () => {
+
+  const { backendUrl, getToken } = useContext(AppContext)
   const quillRef = useRef(null)
   const editorRef = useRef(null)
 
@@ -56,13 +62,18 @@ const AddCourse = () => {
 
   const addLecture = () => {
     setChapter(chapter.map((chapter) => {
-      if(chapter.chapterId === chapterId){
+      if (chapter.chapterId === chapterId) {
         const newLecture = {
           ...lectureDetails,
           lectureOrder: chapter.chapterContent.length > 0 ? chapter.chapterContent.slice(-1)[0].lectureOrder + 1 : 1,
-          lectureId: uniquid()
+          lectureId: uniquid(),
+          lectureUrl: extractYouTubeVideoId(lectureDetails.lectureUrl)
         }
-        chapter.chapterContent.push(newLecture)
+        // chapter.chapterContent.push(newLecture)
+        return {
+          ...chapter,
+          chapterContent: [...chapter.chapterContent, newLecture]
+        }
       }
       return chapter
     }))
@@ -75,9 +86,72 @@ const AddCourse = () => {
     })
   }
 
-  const handleSubmit = async(e) => {
-    e.preventDefault()
-    console.log(chapter)
+  const extractYouTubeVideoId = (url) => {
+    try {
+      const parsedUrl = new URL(url);
+      if (parsedUrl.hostname === "youtu.be") {
+        return parsedUrl.pathname.slice(1);
+      } else if (parsedUrl.hostname.includes("youtube.com")) {
+        return parsedUrl.searchParams.get("v");
+      }
+    } catch (e) {
+      return url; // fallback if it's already an ID
+    }
+  };
+
+
+  const handleSubmit = async (e) => {
+    // console.log("👉 handleSubmit fired")
+    try {
+      e.preventDefault()
+      console.log(chapter)
+      // console.log("👉 image is:", image)
+      if (!image) {
+        toast.error("Please upload course thumbnail")
+        return
+      }
+      const courseData = {
+        courseTitle,
+        courseDescription: quillRef.current.root.innerHTML,
+        coursePrice: Number(coursePrice),
+        discount: Number(discount),
+        courseContent: chapter
+      }
+
+      const formData = new FormData()
+      formData.append('courseData', JSON.stringify(courseData))
+      formData.append('image', image)
+
+      // console.log("👉 courseData:", courseData)
+      // console.log("👉 formData keys:", Array.from(formData.keys()))
+      const token = await getToken()
+      // console.log("👉 token:", token)
+      // console.log("👉 about to call axios.post to:", `${backendUrl}/api/educator/add-course`);
+
+      const { data } = await axios.post(backendUrl + '/api/educator/add-course', formData, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
+
+      // console.log("👉 axios returned:", data);
+
+      if (data.success) {
+        toast.success(data.message)
+        setCourseTitle("")
+        setCoursePrice(0)
+        setDiscount(0)
+        setImage(null)
+        setChapter([])
+        quillRef.current.root.innerHTML = ""
+
+        console.log("Course published!")
+      } else {
+        toast.error(data.message)
+      }
+    } catch (error) {
+      toast.error(error.message)
+    }
   }
 
   useEffect(() => {
@@ -91,7 +165,7 @@ const AddCourse = () => {
 
 
   return (
-    
+
     <div className='h-screen overflow-scroll flex flex-col items-start justify-between md:p-8 md:pb-0 p-4 pt-8 pb-0 '>
       <form onSubmit={handleSubmit} action="" className='flex flex-col gap-4 max-w-full text-gray-500'>
         <div className='flex flex-col gap-1'>
@@ -129,12 +203,12 @@ const AddCourse = () => {
             <div key={chapterIndex} className='bg-white border rounded-lg mb-4'>
               <div className='flex items-center justify-between p-4 border-b'>
                 <div className='flex items-center'>
-                  <img onClick={()=> handleChapter('toggle', chapter.chapterId)} 
-                  src={assets.dropdown_icon} width={14} alt="" className={`mr-2 cursor-pointer transition-all ${chapter.collapsed && "-rotate-90"}`} />
+                  <img onClick={() => handleChapter('toggle', chapter.chapterId)}
+                    src={assets.dropdown_icon} width={14} alt="" className={`mr-2 cursor-pointer transition-all ${chapter.collapsed && "-rotate-90"}`} />
                   <span className='font-semibold'>{chapterIndex + 1} {chapter.chapterTitle}</span>
                 </div>
                 <span className='text-gray-500'>{chapter.chapterContent.length} Lectures</span>
-                <img onClick={()=> handleChapter('remove', chapter.chapterId)} src={assets.cross_icon} alt="" className='cursor-pointer' />
+                <img onClick={() => handleChapter('remove', chapter.chapterId)} src={assets.cross_icon} alt="" className='cursor-pointer' />
               </div>
               {!chapter.collapsed && (
                 <div className='p-4'>
