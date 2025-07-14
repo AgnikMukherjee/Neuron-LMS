@@ -52,7 +52,9 @@ const Navbar = () => {
                         <>
                             <button onClick={becomeEducator}> {isEducator ? 'Educator Dashboard' : 'Become Educator'}</button>
 
-                            | <Link to='/my-enrollments'>My Enrollments</Link>
+                            <div className="hidden sm:block h-6 w-px bg-gray-500"></div>
+
+                             <Link to='/my-enrollments'>My Enrollments</Link>
                         </>
                     }
 
@@ -65,9 +67,11 @@ const Navbar = () => {
             <div className='md:hidden flex items-center gap-2 sm:gap-5 text-gray-500'>
                 <div className='flex items-center gap-1 sm:gap-2 max-sm:text-xs'>
                     {user && <>
-                        <button onClick={becomeEducator}> {isEducator ? 'Educator Dashboard' : 'Become Educator'}</button>
+                        <button onClick={becomeEducator} className='text-center'> {isEducator ? 'Educator Dashboard' : 'Become Educator'}</button>
 
-                        | <Link to='/my-enrollments'>My Enrollments</Link>
+                        <div className="h-6 w-px bg-gray-500"></div>
+
+                        <Link to='/my-enrollments' className='text-center'>My Enrollments</Link>
                     </>
                     }
                 </div>
