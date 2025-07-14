@@ -7,7 +7,7 @@ const Footer = () => {
       <div className='flex flex-col md:flex-row items-start px-8 md:px-0 justify-center gap-10 md:gap-32 py-10 border-b border-white/30'>
         <div className='flex flex-col md:items-start items-center w-full' >
           <img src={assets.logo_frame} alt="" className='w-32 filter invert' />
-          <p className='mt-6 text-center md:text-left text-sm text-white/80'>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Saepe autem iste, consectetur, sint ipsum corporis repellendus natus soluta exercitationem cum et atque quod sit fuga!</p>
+          <p className='mt-6 text-center md:text-left text-sm text-white/80'>Empowering learners and educators with a modern, intuitive platform that makes education impactful. Learn new skills, share expertise and thrive in a connected world—anytime, anywhere.</p>
         </div>
         <div className='flex flex-col md:items-start items-center w-full'>
           <h2 className='font-semibold text-white mb-5'>Comapny</h2>
