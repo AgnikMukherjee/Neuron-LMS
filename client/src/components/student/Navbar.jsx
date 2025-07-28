@@ -50,11 +50,12 @@ const Navbar = () => {
                 <div className='flex items-center gap-5'>
                     {user &&
                         <>
-                            <button onClick={becomeEducator}> {isEducator ? 'Educator Dashboard' : 'Become Educator'}</button>
+                            <button onClick={becomeEducator} className="cursor-pointer transition-transform duration-200 ease-in-out hover:scale-105 hover:-translate-y-1"> {isEducator ? 'Educator Dashboard' : 'Become Educator'}</button>
 
                             <div className="hidden sm:block h-6 w-px bg-gray-500"></div>
 
-                             <Link to='/my-enrollments'>My Enrollments</Link>
+                             <Link to='/my-enrollments'
+                             className="transition-transform duration-200 ease-in-out hover:scale-105 hover:-translate-y-1">My Enrollments</Link>
                         </>
                     }
 
@@ -67,11 +68,12 @@ const Navbar = () => {
             <div className='md:hidden flex items-center gap-2 sm:gap-5 text-gray-500'>
                 <div className='flex items-center gap-1 sm:gap-2 max-sm:text-xs'>
                     {user && <>
-                        <button onClick={becomeEducator} className='text-center'> {isEducator ? 'Educator Dashboard' : 'Become Educator'}</button>
+                        <button onClick={becomeEducator} className='text-center cursor-pointer transition-transform duration-200 ease-in-out hover:scale-105 hover:-translate-y-1'> {isEducator ? 'Educator Dashboard' : 'Become Educator'}</button>
 
-                        <div className="h-6 w-px bg-gray-500"></div>
+                        {/* <div className="h-6 w-px bg-gray-500"></div> */}
 
-                        <Link to='/my-enrollments' className='text-center'>My Enrollments</Link>
+                        <Link to='/my-enrollments' className='text-center transition-transform duration-200 ease-in-out hover:scale-105 hover:-translate-y-1'
+                        >My Enrollments</Link>
                     </>
                     }
                 </div>

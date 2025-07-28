@@ -43,21 +43,21 @@ const Dashboard = () => {
               <img src={assets.patients_icon} alt="" />
               <div>
                 <p className='text-2xl font-medium text-gray-600'>{dashboarData.enrolledStudentsData.length}</p>
-                <p className='text-base text-gray-500'>Total Enrollments</p>
+                <p className='text-base text-gray-500'>Enrollments</p>
               </div>
             </div>
             <div className='flex items-center gap-3 shadow-card border border-blue-500 p-4 w-56 rounded-md'>
               <img src={assets.appointments_icon} alt="" />
               <div>
                 <p className='text-2xl font-medium text-gray-600'>{dashboarData.totalCourses}</p>
-                <p className='text-base text-gray-500'>Total Courses</p>
+                <p className='text-base text-gray-500'>Courses</p>
               </div>
             </div>
             <div className='flex items-center gap-3 shadow-card border border-blue-500 p-4 w-56 rounded-md'>
               <img src={assets.earning_icon} alt="" />
               <div>
                 <p className='text-2xl font-medium text-gray-600'>{currency}{dashboarData.totalEarnings}</p>
-                <p className='text-base text-gray-500'>Total Earnings</p>
+                <p className='text-base text-gray-500'>Earned</p>
               </div>
             </div>
           </div>
